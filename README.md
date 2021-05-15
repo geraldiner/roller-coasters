@@ -2,6 +2,7 @@
 I love roller coasters and "Ride every roller coaster in the world" is on my bucket list. I'd like to try to build a world map with all the roller coasters in the world, which you can mark with pins or different colors when you've visited them. Something like what people do in general with world maps:
 
 ![Scratch Off World Map Poster](https://images-na.ssl-images-amazon.com/images/I/91AZMrtAxFL._AC_SX466_.jpg)
+
 *Source: https://www.amazon.com/Scratch-Poster-Deluxe-United-States/dp/B07G3DPJMF/*
 
 # To-Do
