@@ -104,4 +104,4 @@ async function getRollerCoasterLinks() {
 }
 
 // getRollerCoasterLinks()
-getRollerCoasterInfo()
+// getRollerCoasterInfo()
