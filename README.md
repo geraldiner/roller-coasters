@@ -9,6 +9,7 @@ I love roller coasters and "Ride every roller coaster in the world" is on my buc
 ## Build Database
 * [x] Scrape Ultimate Roller Coasters website
   - Got all the links to the individual roller coaster pages, but parsing each page is different. Especially since there aren't any clear `classes` or `ids` on the info I want/need.
+  - Learned a new lesson in scraping via a VPN or proxy site so my IP doesn't get blocked and I can't access the site anymore...
 * [ ] Create simple API to access later
 
 ## World Map
