@@ -7,7 +7,7 @@ I love roller coasters and "Ride every roller coaster in the world" is on my buc
 
 # To-Do
 ## Build Database
-* [ ] Scrape Ultimate Roller Coasters website
+* [x] Scrape Ultimate Roller Coasters website
   - Got all the links to the individual roller coaster pages, but parsing each page is different. Especially since there aren't any clear `classes` or `ids` on the info I want/need.
 * [ ] Create simple API to access later
 
