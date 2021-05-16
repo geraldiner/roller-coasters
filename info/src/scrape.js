@@ -18,6 +18,7 @@ async function getRollerCoasterInfo() {
     const coasterURL = rootURL + coaster.link
     const html = await getRollerCoasterHtml(coasterURL)
     const $ = cheerio.load(html)
+    const themePark = $('h2.topgrn').find('a').text().trim()
     const themeParkLink = $('h2.topgrn').find('a').attr('href')
     const $contentN = $('#contentN')
     const descHtml = $contentN[0].children[13]
@@ -59,7 +60,7 @@ async function getRollerCoasterInfo() {
     }
     const coasterObj = {
       name: coaster.name,
-      themePark: coaster.themePark,
+      themePark: themePark,
       themeParkLink: rootURL + themeParkLink,
       description: desc,
       link: coasterURL,
@@ -90,14 +91,11 @@ async function getRollerCoasterLinks() {
     const $lis = $alphaList.find('li')
     $lis.each((liIndex, liElement) => {
       const $li = $(liElement)
-      const $children = $li.children()
       const name = $li.find('a').text().trim()
       const link = $li.find('a').attr('href')
-      const themePark = $li.text().trim()
       const rollerCoasterLink = {
         name: name,
-        link: link,
-        themePark: themePark
+        link: link
       }
       rollerCoasterLinks.push(rollerCoasterLink)
     })
@@ -105,4 +103,5 @@ async function getRollerCoasterLinks() {
   fs.writeFileSync('roller_coasters_links.json', JSON.stringify(rollerCoasterLinks, null, 2), 'utf8')
 }
 
+// getRollerCoasterLinks()
 getRollerCoasterInfo()
