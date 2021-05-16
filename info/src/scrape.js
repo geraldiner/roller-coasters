@@ -12,38 +12,76 @@ async function getRollerCoasterInfo() {
 
   }
   const rootURL = 'https://www.ultimaterollercoaster.com/'
-  for (let i = 0; i < 3; i++) {
-    const coaster = rollerCoasterLinks[i]
+  const rollerCoasters = []
+  for (let i = 0; i < rollerCoasterLinks.length; i++) {
+    let coaster = rollerCoasterLinks[i]
     const coasterURL = rootURL + coaster.link
-    try {
-      const html = await getSingleCoasterInfo(coasterURL)
-      const $ = cheerio.load(html)
-      const descHtml = $('#contentN')[0].children[13]
-      let desc = descHtml.name == 'p' ? descHtml.children[0].data : ''
-      const tds = $('.rc_detail').find('td')
-      const year = tds[0].children[0].data
-      const track = tds[1].children[0].data
-      const type = tds[2].children[0].data
-      const designer = tds[3].children[0].data
-      // console.log(`${coaster.name} at ${coaster.themePark} created by ${designer} in ${year} is a ${type} coaster with ${track} track.`)
-      const rc_stats = $('.rc_stats').find('li')
-      let stats = []
-      rc_stats.each((index, element) => {
-        const stat = element.children[0].data
-        stats.push(stat)
-      })
-    } catch (error) {
-      console.log(`Error on ${coaster.name}: ${error}`)
+    const html = await getRollerCoasterHtml(coasterURL)
+    const $ = cheerio.load(html)
+    const themeParkLink = $('h2.topgrn').find('a').attr('href')
+    const $contentN = $('#contentN')
+    const descHtml = $contentN[0].children[13]
+    let desc = descHtml.name == 'p' ? descHtml.children[0].data : ''
+    const tds = $('.rc_detail').find('td')
+    const year = tds[0].children.length > 0 ? tds[0].children[0].data : ''
+    const track = tds[1].children.length > 0 ? tds[1].children[0].data : ''
+    const type = tds[2].children.length > 0 ? tds[2].children[0].data : ''
+    const designer = tds[3].children.length > 0 ? tds[3].children[0].data : ''
+    const rc_stats_lis = $('.rc_stats').find('li')
+    let stats = []
+    rc_stats_lis.each((index, element) => {
+      const stat = element.children.length > 0 ? element.children[0].data : ''
+      stats.push(stat)
+    })
+    const facts = []
+    const $rc_stats = $('.rc_stats')
+    const $rc_detail = $('.rc_detail')
+    if ($rc_stats.length > 0) {
+      const nublu = $rc_stats.next()
+      const start = nublu.next()
+      const firstText = start[0].next.data.trim()
+      if (firstText) facts.push(firstText)
+      let next = start.next()
+      while (next.length > 0) {
+        if (next[0].name == 'p' && next[0].children.length > 0) facts.push(next[0].children[0].data)
+        next = next.next()
+      }
+    } else if ($rc_detail > 0) {
+      const nublu = $rc_detail.next()
+      const start = nublu.next()
+      const firstText = start[0].next.data.trim()
+      if (firstText) facts.push(firstText)
+      let next = start.next()
+      while (next.length > 0) {
+        if (next[0].name == 'p' && next[0].children.length > 0) facts.push(next[0].children[0].data)
+        next = next.next()
+      }
     }
+    const coasterObj = {
+      name: coaster.name,
+      themePark: coaster.themePark,
+      themeParkLink: rootURL + themeParkLink,
+      description: desc,
+      link: coasterURL,
+      year: year,
+      trackType: track,
+      rideType: type,
+      designer: designer,
+      stats: stats,
+      facts: facts
+    }
+    rollerCoasters.push(coasterObj)
   }
+  fs.writeFileSync('roller_coasters_data.json', JSON.stringify(rollerCoasters, null, 2), 'utf8')
 }
 
-async function getSingleCoasterInfo(coasterURL) {
+async function getRollerCoasterHtml(coasterURL) {
   const { data: html } = await axios.get(coasterURL)
   return html
 }
 
 async function getRollerCoasterLinks() {
+  let rollerCoasterLinks = []
   const URL = 'https://www.ultimaterollercoaster.com/coasters/browse/a-to-z'
   const { data: html } = await axios.get(URL)
   const $ = cheerio.load(html)
