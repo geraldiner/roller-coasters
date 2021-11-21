@@ -15,6 +15,7 @@ I love roller coasters and "Ride every roller coaster in the world" is on my buc
 ## World Map
 * [ ] Figure out how to make an interactive map with marked points for the roller coasters
 * [ ] Come up with a way to "check off" one of those marked points for completio
+
 ## Other Projects
 
 Check out other stuff I've worked on:
@@ -26,5 +27,3 @@ Check out other stuff I've worked on:
 **Snapchat Clone:** https://github.com/geraldiner/snapchat-clone
 
 **K.K. Radio:** https://github.com/geraldiner/kk-radio
-
-**Interactive Piano:** https://github.com/geraldiner/piano
